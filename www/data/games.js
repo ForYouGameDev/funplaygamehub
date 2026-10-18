@@ -119,6 +119,46 @@ window.HUB_GAMES = {
         "single": true,
         "multi": false
       }
+    },
+	{
+      "id": "SkypPip",
+      "title": "Sky Pip",
+      "description": "Fly Bird By taping complete levels",
+      "category": "Arcade",
+      "folder": "games/game7/",
+      "entry": "index7.html",
+      "logo": "assets/logos/image7.svg",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
+    },
+	{
+      "id": "galacticOnslaught3d",
+      "title": "Galactic Onslaught 3D",
+      "description": "shooting avoiding obsticles alien enemy ships",
+      "category": "Action",
+      "folder": "games/game8/",
+      "entry": "index8.html",
+      "logo": "assets/logos/image8.svg",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
     }
   ]
 };
