@@ -159,6 +159,66 @@ window.HUB_GAMES = {
         "single": true,
         "multi": false
       }
+    },
+	  {
+      "id": "VelocityRush",
+      "title": "Velocity Rush",
+      "description": "Top Speed driving, Overtaking cars and win",
+      "category": "Arcade",
+      "folder": "games/game9/",
+      "entry": "index9.html",
+      "logo": "assets/logos/image9.svg",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
+    },
+	  {
+      "id": "Color Water Sort",
+      "title": "Color Water Sort",
+      "description": "Tubes fill with diffrent colours, shift the water to seperate all the colours",
+      "category": "Puzzle",
+      "folder": "games/game10/",
+      "entry": "index10.html",
+      "logo": "assets/logos/image10.svg",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
+    },
+	  {
+      "id": "DoodleSandDigger",
+      "title": "Doodle Sand Digger",
+      "description": "Digs sand to make path for ball to reach bucket",
+      "category": "Puzzle",
+      "folder": "games/game11/",
+      "entry": "index11.html",
+      "logo": "assets/logos/image11.svg",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
     }
   ]
 };
