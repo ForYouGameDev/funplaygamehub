@@ -4,5 +4,5 @@ window.ADS_CONFIG = {
   appId: "ca-app-pub-3940256099942544~3347511713",
   banner: "ca-app-pub-3940256099942544/6300978111",
   interstitial: "ca-app-pub-3940256099942544/1033173712",
-  showEvery: 1   // 1 = har game se pehle ad, 2 = har doosre game se pehle
+  showEvery: 2   // 1 = har game se pehle ad, 2 = har doosre game se pehle
 };
