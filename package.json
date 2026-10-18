@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "postinstall": "esbuild src/admob-entry.js --bundle --minify --format=iife --outfile=www/js/admob-plugin.js",
     "capacitor:sync:after": "node scripts/patch-android.js"
   },
   "dependencies": {
@@ -10,5 +11,8 @@
     "@capacitor/android": "^6.2.0",
     "@capacitor/cli": "^6.2.0",
     "@capacitor/core": "^6.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
   }
 }
