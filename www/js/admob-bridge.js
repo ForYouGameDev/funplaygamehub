@@ -1,11 +1,25 @@
 /* Capacitor AdMob ko hub ke store.js (AndroidAds bridge) se jodta hai. provider "admob" hone par chalta hai. */
 (function(){
   var S=(window.HUB_SETTINGS||{}).ads||{}, U=S.adUnits||{}, test=S.testing!==false;
-  var cap=window.Capacitor, A=null;
-  try{if(cap&&cap.registerPlugin&&cap.isNativePlatform&&cap.isNativePlatform())A=cap.registerPlugin('AdMob')}catch(e){}
-  if(!A)return; /* browser me ho to bridge nahi banta */
+  var hc=window.HubCap||{}, cap=hc.Capacitor||window.Capacitor, A=hc.AdMob||null, isNative=false;
+  try{isNative=!!(cap&&cap.isNativePlatform&&cap.isNativePlatform())}catch(e){}
+  /* test mode me screen ke upar chhota status box (diagnosis ke liye) */
+  var logEl=null,lines=[];
+  function show(m){
+    if(!test)return;
+    try{
+      console.log('[ads]',m);
+      if(!logEl){logEl=document.createElement('div');logEl.id='adlog';
+        logEl.style.cssText='position:fixed;left:4px;top:4px;z-index:99999;max-width:92%;font:11px/1.3 monospace;color:#7CFFB2;background:rgba(0,0,0,.65);padding:4px 6px;border-radius:6px;pointer-events:none;white-space:pre-wrap';
+        (document.body||document.documentElement).appendChild(logEl)}
+      lines.push(m);if(lines.length>7)lines.shift();logEl.textContent=lines.join('\n');
+    }catch(e){}
+  }
+  show('bridge: HubCap='+!!window.HubCap+' plugin='+!!A+' native='+isNative);
+  if(!A||!isNative)return; /* browser me ya plugin na mile to bridge nahi banta */
+  var adEl=document.getElementById('ad');if(adEl)adEl.style.display='none';
   function err(e){return e&&e.message?e.message:JSON.stringify(e)}
-  function dbg(m){if(!test)return;try{console.log('[ads]',m);var t=document.getElementById('toast');t.textContent='Ads: '+m;t.classList.add('on');setTimeout(function(){t.classList.remove('on')},3000)}catch(e){}}
+  function dbg(m){show(m)}
   function closed(){if(window.onHubAdClosed)window.onHubAdClosed()}
   function rewardDone(ok){if(window.onHubReward)window.onHubReward(!!ok)}
   function waitFor(p,ms){return Promise.race([p,new Promise(function(r){setTimeout(function(){r(false)},ms)})])}
