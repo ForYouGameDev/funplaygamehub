@@ -27,6 +27,11 @@ jobs:
           npm install
           npx cap add android
           npx cap sync android
+        
+        - name: Set AdMob App ID in manifest
+        run: |
+          node scripts/patch-android.js
+          grep -q "com.google.android.gms.ads.APPLICATION_ID" android/app/src/main/AndroidManifest.xml
 
       - name: Prepare signing key
         run: |
