@@ -28,10 +28,14 @@ jobs:
           npx cap add android
           npx cap sync android
         
-        - name: Set AdMob App ID in manifest
+      - name: Set AdMob App ID in manifest
         run: |
           node scripts/patch-android.js
           grep -q "com.google.android.gms.ads.APPLICATION_ID" android/app/src/main/AndroidManifest.xml
+            
+            
+      - name: Generate app icons
+        run: npx @capacitor/assets generate --android --iconBackgroundColor '#0b1020' --iconBackgroundColorDark '#0b1020'
 
       - name: Prepare signing key
         run: |
