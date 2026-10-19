@@ -74,3 +74,14 @@ html{scroll-behavior:smooth;overscroll-behavior-y:none}body{background:radial-gr
 .tg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.tc{background:var(--c);border-radius:16px;padding:10px;border:2px solid transparent;display:flex;flex-direction:column;gap:8px}.tc.on{border-color:var(--a)}
 .tc b{font-size:13px}.sw{height:54px;border-radius:12px;position:relative}.sw span{position:absolute;bottom:8px;width:14px;height:14px;border-radius:50%;left:10px}.sw span+span{left:30px}
 .adov{position:fixed;inset:0;z-index:60;background:#000e;display:flex;align-items:center;justify-content:center}.adbox{background:var(--c);color:var(--t);border-radius:20px;padding:26px;text-align:center;width:min(86%,320px)}.adnum{font-size:40px;font-weight:800;min-height:52px;color:var(--a)}
+
+/* ===== PERFORMANCE (mobile) ===== */
+*{-webkit-tap-highlight-color:transparent}
+button,.btn,.chip,.ib,.card,a,input{touch-action:manipulation}
+img{-webkit-user-drag:none;user-select:none}
+/* game chalte waqt neeche ka hub render/animate na ho */
+.playing main,.playing footer,.playing .top,.playing .search,.playing #ad{visibility:hidden}
+.playing .hero::after,.playing .hero img,.playing .brand img{animation:none!important}
+/* chhoti/slow screens par shimmer band */
+@media (max-width:600px){.hero::after{animation:none}}
+@media (prefers-reduced-motion:reduce){.hero::after,.hero img,.brand img{animation:none}}

@@ -52,7 +52,7 @@ function back(){fr.onload=null;fr.src='about:blank';pl.hidden=true;document.body
 $('#back').onclick=back;
 $('#fs').onclick=()=>{(document.fullscreenElement?document.exitFullscreen():pl.requestFullscreen()).catch(()=>toast('Fullscreen not supported'))};
 addEventListener('message',e=>{if(e.source!==fr.contentWindow)return;if(e.data&&e.data.type==='GAME_EXIT_REQUEST')back()});
-$('#q').oninput=e=>{q=e.target.value.trim();render()};
+let qt;$('#q').oninput=e=>{q=e.target.value.trim();clearTimeout(qt);qt=setTimeout(render,140)};
 (async()=>{
  S=window.HUB_SETTINGS||{};
  $('#hubName').textContent=S.hubName||'Game Hub';$('#hubTag').textContent=S.tagline||'';document.title=S.hubName||'Game Hub';

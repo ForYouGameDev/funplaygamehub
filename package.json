@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "esbuild src/admob-entry.js --bundle --minify --format=iife --outfile=www/js/admob-plugin.js",
+    "postinstall": "esbuild src/admob-entry.js --bundle --minify --format=iife --outfile=www/js/admob-plugin.js && node scripts/copy-assets.js",
     "capacitor:sync:after": "node scripts/patch-android.js"
   },
   "dependencies": {
     "@capacitor-community/admob": "^6.0.0",
     "@capacitor/android": "^6.2.0",
     "@capacitor/cli": "^6.2.0",
-    "@capacitor/core": "^6.2.0"
+    "@capacitor/core": "^6.2.0",
+    "three": "0.128.0"
   },
   "devDependencies": {
     "esbuild": "^0.24.0"

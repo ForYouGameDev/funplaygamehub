@@ -8,7 +8,7 @@ window.HUB_GAMES = {
       "category": "Action",
       "folder": "games/game1/",
       "entry": "index1.html",
-      "logo": "assets/logos/image1.svg",
+      "logo": "assets/logos/image1.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -28,7 +28,7 @@ window.HUB_GAMES = {
       "category": "Action",
       "folder": "games/game2/",
       "entry": "index2.html",
-      "logo": "assets/logos/image2.svg",
+      "logo": "assets/logos/image2.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -47,7 +47,7 @@ window.HUB_GAMES = {
       "category": "Arcade",
       "folder": "games/game3/",
       "entry": "index3.html",
-      "logo": "assets/logos/image3.svg",
+      "logo": "assets/logos/image3.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -67,7 +67,7 @@ window.HUB_GAMES = {
       "category": "Action",
       "folder": "games/game4/",
       "entry": "index4.html",
-      "logo": "assets/logos/image4.svg",
+      "logo": "assets/logos/image4.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -87,7 +87,7 @@ window.HUB_GAMES = {
       "category": "Arcade",
       "folder": "games/game5/",
       "entry": "index5.html",
-      "logo": "assets/logos/image5.svg",
+      "logo": "assets/logos/image5.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -107,7 +107,7 @@ window.HUB_GAMES = {
       "category": "Arcade",
       "folder": "games/game6/",
       "entry": "index6.html",
-      "logo": "assets/logos/image6.svg",
+      "logo": "assets/logos/image6.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -127,7 +127,7 @@ window.HUB_GAMES = {
       "category": "Arcade",
       "folder": "games/game7/",
       "entry": "index7.html",
-      "logo": "assets/logos/image7.svg",
+      "logo": "assets/logos/image7.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -147,7 +147,7 @@ window.HUB_GAMES = {
       "category": "Action",
       "folder": "games/game8/",
       "entry": "index8.html",
-      "logo": "assets/logos/image8.svg",
+      "logo": "assets/logos/image8.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -167,7 +167,7 @@ window.HUB_GAMES = {
       "category": "Arcade",
       "folder": "games/game9/",
       "entry": "index9.html",
-      "logo": "assets/logos/image9.svg",
+      "logo": "assets/logos/image9.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -187,7 +187,7 @@ window.HUB_GAMES = {
       "category": "Puzzle",
       "folder": "games/game10/",
       "entry": "index10.html",
-      "logo": "assets/logos/image10.svg",
+      "logo": "assets/logos/image10.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -207,7 +207,7 @@ window.HUB_GAMES = {
       "category": "Puzzle",
       "folder": "games/game11/",
       "entry": "index11.html",
-      "logo": "assets/logos/image11.svg",
+      "logo": "assets/logos/image11.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -227,7 +227,7 @@ window.HUB_GAMES = {
       "category": "Puzzle",
       "folder": "games/game12/",
       "entry": "index12.html",
-      "logo": "assets/logos/image12.svg",
+      "logo": "assets/logos/image12.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -247,7 +247,7 @@ window.HUB_GAMES = {
       "category": "Puzzle",
       "folder": "games/game13/",
       "entry": "index13.html",
-      "logo": "assets/logos/image13.svg",
+      "logo": "assets/logos/image13.webp",
       "featured": true,
       "enabled": true,
       "tags": [
@@ -267,7 +267,7 @@ window.HUB_GAMES = {
       "category": "Puzzle",
       "folder": "games/game14/",
       "entry": "index14.html",
-      "logo": "assets/logos/image14.svg",
+      "logo": "assets/logos/image14.webp",
       "featured": true,
       "enabled": true,
       "tags": [
