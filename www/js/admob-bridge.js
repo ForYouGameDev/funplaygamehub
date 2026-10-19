@@ -59,7 +59,8 @@
   window.AndroidAds={
     showBanner:showBanner,
     showInterstitial:function(){
-      waitFor(loadInt(),4000).then(function(ok){
+      if(navigator.onLine===false)return closed();
+      waitFor(loadInt(),2500).then(function(ok){
         if(!ok||!intS.ready)return closed(); /* offline ya ad nahi aaya: game seedha khule */
         return A.showInterstitial().catch(function(e){dbg('show: '+err(e));intS.ready=false;closed()});
       });

@@ -24,8 +24,12 @@ function interstitial(cb){cb=once(cb);if(AD.enabled===false||AD.provider==='none
 function rewarded(cb){cb=once(cb);if(AD.enabled===false||AD.provider==='none')return cb(false);
  if(native()){window.onHubReward=ok=>cb(!!ok);setTimeout(()=>cb(false),60000);try{AndroidAds.showRewarded()}catch{cb(false)}}
  else if(AD.provider==='mock')mock('Rewarded',8,ok=>cb(ok));else cb(false)}
-function gate(f){launches++;const ok=AD.interstitialOnGameOpen!==false&&launches%(AD.gameOpenEvery||1)===0&&Date.now()-lastAd>=(AD.cooldownSec||0)*1e3;
- ok?interstitial(()=>{lastAd=Date.now();f()}):f()}
+let gating=false;
+function gate(f){if(gating)return;launches++;const ok=AD.interstitialOnGameOpen!==false&&launches%(AD.gameOpenEvery||1)===0&&Date.now()-lastAd>=(AD.cooldownSec||0)*1e3;
+ if(!ok)return f();
+ gating=true;const fin=()=>{gating=false;lastAd=Date.now();f()};
+ if(navigator.onLine===false)return fin();
+ interstitial(fin)}
 window.HubAds={gate,interstitial,rewarded};
 /* COINS + STORE UI */
 const chipN=h('span',{textContent:coins});

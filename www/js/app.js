@@ -42,12 +42,13 @@ function resume(){if(music&&prefs.music)music.play().catch(()=>{})}
 $('#musicBtn').onclick=()=>{prefs.music=!prefs.music;sv('prefs',prefs);ui();if(!musicOk)toast('hub.mp3 not found in assets/music/');else prefs.music?resume():music&&music.pause()};
 const fr=$('#frame'),pl=$('#player'),st=$('#pstate');
 function play(g){if(busy)return;if(music)music.pause();(window.HubAds?HubAds.gate:f=>f())(()=>start(g))}
-async function start(g){if(busy)return;busy=true;
+let curId=null;
+async function start(g){if(busy||(curId===g.id&&!pl.hidden))return;curId=g.id;busy=true;
  try{if(music)music.pause();$('#ptitle').textContent=g.title;st.textContent='Loading…';st.hidden=false;pl.hidden=false;document.body.style.overflow='hidden';document.body.classList.add('playing');
  const u=url(g); const t=setTimeout(()=>{st.textContent='⚠️ Game load nahi hua? games.js mein folder/entry path check karo: '+u},8000);
  fr.onload=()=>{clearTimeout(t);st.hidden=true;try{fr.contentWindow.focus()}catch{}};fr.src=u;
  rec=[g.id,...rec.filter(x=>x!==g.id)].slice(0,S.recentLimit||8);sv('rec',rec)}finally{setTimeout(()=>busy=false,400)}}
-function back(){fr.onload=null;fr.src='about:blank';pl.hidden=true;document.body.style.overflow='';document.body.classList.remove('playing');
+function back(){curId=null;fr.onload=null;fr.src='about:blank';pl.hidden=true;document.body.style.overflow='';document.body.classList.remove('playing');
  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});resume();render()}
 $('#back').onclick=back;
 $('#fs').onclick=()=>{(document.fullscreenElement?document.exitFullscreen():pl.requestFullscreen()).catch(()=>toast('Fullscreen not supported'))};
