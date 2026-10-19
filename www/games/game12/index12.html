@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>2048 Merge Ball Drop</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+html,body{height:100%;margin:0;background:#0b0f24;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#fff;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+#app{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.bar{display:flex;gap:8px;align-items:center;justify-content:center;padding:6px 8px;box-sizing:border-box}
+.sc{text-align:center;min-width:64px}.sc b{display:block;font-size:22px}.sc small{opacity:.6;font-size:11px;letter-spacing:1px}
+button{font:inherit;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:10px 14px;min-height:44px;cursor:pointer}
+button:active{transform:scale(.95)}button.on{background:#ff4d8d;border-color:#fff}
+#c{border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,.5);touch-action:none}
+#ov{position:absolute;inset:0;background:rgba(5,8,25,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:20px;z-index:5}
+#ov h1{margin:0;font-size:clamp(30px,9vw,52px);background:linear-gradient(90deg,#22d3ee,#ff4d8d,#ffd36b);-webkit-background-clip:text;background-clip:text;color:transparent}
+#ov p{margin:0;opacity:.85}.modes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.big{font-size:22px;padding:14px 40px;background:linear-gradient(90deg,#22d3ee,#ff4d8d);border:0;font-weight:700}
+.hide{display:none!important}
+</style></head><body><div id="app">
+<div class="bar" id="hud"><div class="sc"><small>SCORE</small><b id="sc">0</b></div><div class="sc"><small>BEST</small><b id="bs">0</b></div><div class="sc"><small id="ml">CLASSIC</small><b id="tm">&nbsp;</b></div><button id="bp">⏸</button><button id="bt">🎨</button><button id="bm">🔊</button></div>
+<canvas id="c" width="400" height="720"></canvas>
+<div class="bar" id="tools"><button id="t1">🗑 Remove ×3</button><button id="t2">💥 Shake ×2</button></div>
+<div id="ov"><h1>2048<br>MERGE BALL DROP</h1><p id="msg">Same numbers ko touch karao aur merge karo!</p><div class="modes" id="modes"></div><button class="big" id="go">PLAY</button><p style="font-size:12px;opacity:.6">Move: mouse/touch/←→ • Drop: tap/click/Space</p></div>
+</div>
+<script>
+"use strict";
+const W=400,H=720,L=20,R=380,FY=700,DY=140;
+const cv=document.getElementById('c'),g=cv.getContext('2d'),$=id=>document.getElementById(id);
+const TH=[{b:['#0b0f24','#2a1060'],w:'#22d3ee',h:0,s:90,l:58},{b:['#ffe3f1','#c9e4ff'],w:'#ff8fc7',h:15,s:85,l:68},{b:['#2b0f3a','#ff6b4a'],w:'#ffd36b',h:-25,s:92,l:60},{b:['#0b2a1b','#2b6a46'],w:'#8be28b',h:50,s:62,l:52}];
+const HUES=[200,150,50,30,5,320,270,225,175,45,285,340];
+const MODES={classic:'Classic',target:'Target 2048',time:'Time Attack',relaxed:'Relaxed'};
+let S={best:{},bestBall:2,merges:0,games:0,theme:0,mute:false};
+try{Object.assign(S,JSON.parse(localStorage.getItem('mbd1')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('mbd1',JSON.stringify(S))}catch(e){}};
+let mode='classic',balls=[],parts=[],rings=[],texts=[],score=0,combo=0,lastM=0,clock=0,warn=0,running=false,paused=false,over=false,uid=0;
+let cur,nxt,aimX=200,nextDrop=0,tLeft=90,maxBall=2,bestCombo=0,mergesRun=0,removeMode=false,charges=[3,2],slow=1,won=false;
+const rad=v=>16+6*Math.log2(v),pick=()=>{const r=Math.random()*100;return r<40?2:r<70?4:r<88?8:r<96?16:32};
+const col=(v,a=0,dl=0)=>{const T=TH[S.theme];return`hsl(${(HUES[Math.min(11,Math.log2(v)-1)]+T.h+360)%360},${T.s}%,${T.l+dl}%)`};
+// audio
+let ac;function tone(f,d=.12,t='sine',v=.15){if(S.mute)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),gn=ac.createGain();o.type=t;o.frequency.value=f;gn.gain.setValueAtTime(v,ac.currentTime);gn.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.connect(gn).connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}
+const buzz=n=>{try{navigator.vibrate&&!S.mute&&navigator.vibrate(n)}catch(e){}};
+function mk(v,x,y){return{id:++uid,v,r:rad(v),x,y,vx:0,vy:0,m:0,age:0,pop:1}}
+function start(m){mode=m;balls=[];parts=[];rings=[];texts=[];score=0;combo=0;warn=0;over=false;won=false;paused=false;running=true;tLeft=90;maxBall=2;bestCombo=0;mergesRun=0;charges=[3,2];removeMode=false;
+cur=pick();nxt=pick();nextDrop=0;S.games++;save();$('ov').classList.add('hide');$('ml').textContent=MODES[m].toUpperCase();$('tm').innerHTML=m==='time'?'90':'&nbsp;';ui()}
+function ui(){$('sc').textContent=score;$('bs').textContent=S.best[mode]||0;$('t1').textContent='🗑 Remove ×'+charges[0];$('t2').textContent='💥 Shake ×'+charges[1];$('t1').classList.toggle('on',removeMode);$('bm').textContent=S.mute?'🔇':'🔊'}
+function drop(){if(!running||paused||over||clock<nextDrop)return;const r=rad(cur),b=mk(cur,Math.max(L+r,Math.min(R-r,aimX)),70);b.vy=120;balls.push(b);tone(300,.08,'triangle');cur=nxt;nxt=pick();nextDrop=clock+.45}
+function merge(a,b){const v=a.v*2,n=mk(v,(a.x+b.x)/2,(a.y+b.y)/2);n.vy=-90;n.pop=.6;a.dead=b.dead=1;balls.push(n);
+combo=clock-lastM<1.1?combo+1:1;lastM=clock;bestCombo=Math.max(bestCombo,combo);mergesRun++;S.merges++;
+const pts=v*Math.min(combo,8);score+=pts;if(v>maxBall)maxBall=v;if(v>S.bestBall)S.bestBall=v;
+rings.push({x:n.x,y:n.y,r:n.r,t:0,c:col(v)});texts.push({x:n.x,y:n.y-n.r,t:0,s:'+'+pts+(combo>1?'  x'+combo:'')});
+for(let i=0;i<(S.q===0?6:14);i++){const an=Math.random()*6.28,sp=80+Math.random()*180;parts.push({x:n.x,y:n.y,vx:Math.cos(an)*sp,vy:Math.sin(an)*sp,t:0,c:col(v,0,12)})}
+tone(380+combo*90+Math.log2(v)*25,.18,'sine',.18);if(v>=256)buzz(30);
+if(mode==='target'&&v>=2048&&!won){won=true;end('🏆 YOU WIN! 2048 bana diya!')}}
+function step(dt){clock+=dt;const n=4,h=dt/n*slow;
+for(let s=0;s<n;s++){const pr=[];
+for(const b of balls){b.vy+=1500*h;b.x+=b.vx*h;b.y+=b.vy*h;b.vx*=.9995;const sp=Math.hypot(b.vx,b.vy);if(sp>1300){b.vx*=1300/sp;b.vy*=1300/sp}
+if(b.x-b.r<L){b.x=L+b.r;b.vx=Math.abs(b.vx)*.2}if(b.x+b.r>R){b.x=R-b.r;b.vx=-Math.abs(b.vx)*.2}
+if(b.y+b.r>FY){b.y=FY-b.r;b.vy=-Math.abs(b.vy)*.12;b.vx*=.97}}
+for(let i=0;i<balls.length;i++)for(let j=i+1;j<balls.length;j++){const a=balls[i],b=balls[j];if(a.dead||b.dead)continue;
+let dx=b.x-a.x,dy=b.y-a.y;const d=Math.hypot(dx,dy)||.01,mn=a.r+b.r;
+if(d<mn+1.5&&a.v===b.v&&!a.m&&!b.m&&(a.age>.05||b.age>.05)){a.m=b.m=1;pr.push([a,b]);continue}
+if(d<mn){dx/=d;dy/=d;const o=mn-d,m1=a.r*a.r,m2=b.r*b.r,t=m1+m2;
+a.x-=dx*o*m2/t;a.y-=dy*o*m2/t;b.x+=dx*o*m1/t;b.y+=dy*o*m1/t;
+const vn=(b.vx-a.vx)*dx+(b.vy-a.vy)*dy;if(vn<0){const j=-(1+.12)*vn/(1/m1+1/m2);a.vx-=j*dx/m1;a.vy-=j*dy/m1;b.vx+=j*dx/m2;b.vy+=j*dy/m2;
+const tx=-dy,ty=dx,vt=(b.vx-a.vx)*tx+(b.vy-a.vy)*ty,f=vt*.02;a.vx+=f*tx;a.vy+=f*ty;b.vx-=f*tx;b.vy-=f*ty}}}
+for(const[a,b]of pr)merge(a,b);if(pr.length)balls=balls.filter(b=>!b.dead)}
+for(const b of balls){b.age+=dt;if(b.pop<1)b.pop=Math.min(1,b.pop+dt*3.5)}
+// overflow
+let danger=balls.some(b=>b.age>1.3&&b.y-b.r<DY&&Math.hypot(b.vx,b.vy)<90);
+warn=danger?warn+dt:Math.max(0,warn-dt*2);
+if(warn>2.5){if(mode==='relaxed'){const t=balls.reduce((p,b)=>b.y<p.y?b:p);t.dead=1;balls=balls.filter(b=>!b.dead);warn=0;tone(200,.3,'sawtooth')}else end('Container overflow — balls limit line ke upar reh gaye!')}
+if(danger&&warn>.2&&Math.floor(warn*4)%2==0&&Math.random()<.05)tone(160,.1,'square',.06);
+if(mode==='time'){tLeft-=dt;$('tm').textContent=Math.max(0,Math.ceil(tLeft));if(tLeft<=0)end('⏱ Time up!')}
+if(clock-lastM>1.4)combo=0;
+for(const p of parts){p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=500*dt}parts=parts.filter(p=>p.t<.6);
+for(const r of rings)r.t+=dt;rings=rings.filter(r=>r.t<.45);for(const t of texts)t.t+=dt;texts=texts.filter(t=>t.t<.9);ui()}
+function end(msg){if(over)return;over=true;running=false;tone(150,.6,'sawtooth');buzz(150);const nb=score>(S.best[mode]||0);if(nb)S.best[mode]=score;save();
+$('ov').classList.remove('hide');$('msg').innerHTML=`<b>${msg}</b><br>Score: <b>${score}</b> ${nb?'🌟 New Best!':''}<br>Highest ball: ${maxBall} • Merges: ${mergesRun} • Best combo: x${bestCombo}`;$('go').textContent='RETRY';ui()}
+// drawing
+function ball(x,y,r,v,sc=1){r*=sc;const gr=g.createRadialGradient(x-r*.35,y-r*.4,r*.1,x,y,r);gr.addColorStop(0,col(v,0,22));gr.addColorStop(.55,col(v));gr.addColorStop(1,col(v,0,-22));
+g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,7);g.fill();g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=2;g.stroke();
+g.fillStyle='rgba(255,255,255,.4)';g.beginPath();g.ellipse(x-r*.3,y-r*.5,r*.35,r*.17,-.6,0,7);g.fill();
+if(v>=1024){g.strokeStyle='rgba(255,215,0,.8)';g.lineWidth=3;g.beginPath();g.arc(x,y,r+3,0,7);g.stroke()}
+const d=String(v).length;g.font=`800 ${r*(d<3?1:d==3?.78:.62)}px system-ui`;g.textAlign='center';g.textBaseline='middle';g.lineWidth=3;g.strokeStyle='rgba(0,0,0,.35)';g.strokeText(v,x,y+1);g.fillStyle='#fff';g.fillText(v,x,y+1)}
+function draw(){const T=TH[S.theme],bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,T.b[0]);bg.addColorStop(1,T.b[1]);g.fillStyle=bg;g.fillRect(0,0,W,H);
+g.fillStyle='rgba(255,255,255,.05)';g.fillRect(L,DY,R-L,FY-DY);
+g.strokeStyle=T.w;g.lineWidth=6;g.shadowColor=T.w;g.shadowBlur=12;g.beginPath();g.moveTo(L-3,DY-30);g.lineTo(L-3,FY+3);g.lineTo(R+3,FY+3);g.lineTo(R+3,DY-30);g.stroke();g.shadowBlur=0;
+g.strokeStyle=warn>0?`rgba(255,60,60,${.5+.5*Math.sin(clock*12)})`:'rgba(255,90,90,.35)';g.lineWidth=2;g.setLineDash([8,8]);g.beginPath();g.moveTo(L,DY);g.lineTo(R,DY);g.stroke();g.setLineDash([]);
+if(running&&!over){const r=rad(cur),x=Math.max(L+r,Math.min(R-r,aimX));let y=FY;for(const b of balls){const dx=Math.abs(b.x-x),q=b.r+r;if(dx<q)y=Math.min(y,b.y-Math.sqrt(q*q-dx*dx)+r)}
+g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=2;g.setLineDash([3,9]);g.beginPath();g.moveTo(x,70);g.lineTo(x,y-r);g.stroke();g.setLineDash([]);
+g.globalAlpha=clock<nextDrop?.4:1;ball(x,70,r,cur);g.globalAlpha=1}
+g.fillStyle='rgba(0,0,0,.45)';g.strokeStyle=T.w;g.lineWidth=2;g.beginPath();if(g.roundRect)g.roundRect(294,6,96,100,16);else g.rect(294,6,96,100);g.fill();g.stroke();g.fillStyle='#fff';g.font='800 16px system-ui';g.textAlign='center';g.textBaseline='middle';g.fillText('NEXT',342,22);if(nxt)ball(342,67,30,nxt,1+.04*Math.sin(clock*4));
+for(const b of balls){g.fillStyle='rgba(0,0,0,.25)';g.beginPath();g.ellipse(b.x+3,b.y+b.r*.9,b.r*.9,b.r*.25,0,0,7);g.fill();ball(b.x,b.y,b.r,b.v,b.pop<1?b.pop+.25*Math.sin(b.pop*3.14):1)}
+for(const r of rings){g.strokeStyle=r.c;g.globalAlpha=1-r.t/.45;g.lineWidth=4;g.beginPath();g.arc(r.x,r.y,r.r+r.t*160,0,7);g.stroke()}
+for(const p of parts){g.globalAlpha=1-p.t/.6;g.fillStyle=p.c;g.beginPath();g.arc(p.x,p.y,3,0,7);g.fill()}g.globalAlpha=1;
+g.font='800 20px system-ui';for(const t of texts){g.globalAlpha=1-t.t/.9;g.fillStyle='#fff';g.fillText(t.s,t.x,t.y-t.t*50)}g.globalAlpha=1;
+if(combo>1){g.font='900 36px system-ui';g.fillStyle='#ffd36b';g.strokeStyle='#000';g.lineWidth=4;g.strokeText('COMBO x'+combo,200,120);g.fillText('COMBO x'+combo,200,120)}
+if(paused){g.fillStyle='rgba(0,0,0,.6)';g.fillRect(0,0,W,H);g.fillStyle='#fff';g.font='800 40px system-ui';g.fillText('PAUSED',200,360)}}
+let last=performance.now();function loop(t){const dt=Math.min(.033,(t-last)/1000);last=t;if(running&&!paused)step(dt);draw();requestAnimationFrame(loop)}
+// input
+function fit(){const hh=$('hud').offsetHeight+$('tools').offsetHeight+8,ah=innerHeight-hh-16,w=Math.min(innerWidth-8,ah*W/H);cv.style.width=w+'px';cv.style.height=w*H/W+'px'}
+addEventListener('resize',fit);
+const pos=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)/r.width*W,(e.clientY-r.top)/r.height*H]};
+cv.addEventListener('pointermove',e=>{aimX=pos(e)[0]});cv.addEventListener('pointerdown',e=>{aimX=pos(e)[0]});
+cv.addEventListener('pointerup',e=>{const[x,y]=pos(e);aimX=x;if(removeMode){const b=balls.find(b=>Math.hypot(b.x-x,b.y-y)<b.r);if(b){b.dead=1;balls=balls.filter(q=>!q.dead);charges[0]--;removeMode=false;tone(520,.15,'square');ui()}return}drop()});
+addEventListener('keydown',e=>{if(e.key==='ArrowLeft')aimX-=20;if(e.key==='ArrowRight')aimX+=20;if(e.key===' '){e.preventDefault();drop()}if(e.key==='p')$('bp').click()});
+$('t1').onclick=()=>{if(charges[0]>0&&running){removeMode=!removeMode;ui()}};
+$('t2').onclick=()=>{if(charges[1]>0&&running&&!paused){charges[1]--;for(const b of balls){b.vy-=260+Math.random()*120;b.vx+=(Math.random()-.5)*260}tone(120,.3,'sawtooth');buzz(60);ui()}};
+$('bp').onclick=()=>{if(running)paused=!paused};$('bt').onclick=()=>{S.theme=(S.theme+1)%TH.length;save()};$('bm').onclick=()=>{S.mute=!S.mute;save();ui()};
+$('go').onclick=()=>{ac&&ac.resume&&ac.resume();start(mode)};
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&running)paused=true});
+for(const k in MODES){const b=document.createElement('button');b.textContent=MODES[k];b.onclick=()=>{mode=k;[...$('modes').children].forEach(c=>c.classList.toggle('on',c===b))};if(k===mode)b.classList.add('on');$('modes').appendChild(b)}
+$('msg').innerHTML='Same numbers ko touch karao aur merge karo!<br>Best (Classic): '+(S.best.classic||0)+' • Best ball: '+S.bestBall;
+fit();ui();requestAnimationFrame(loop);
+</script></body></html>
