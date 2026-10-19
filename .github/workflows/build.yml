@@ -66,15 +66,15 @@ jobs:
           $BT/zipalign -f 4 android/app/build/outputs/apk/release/app-release-unsigned.apk out/aligned.apk
           $BT/apksigner sign --ks release.keystore --ks-key-alias "$ALIAS" \
             --ks-pass pass:$STORE_PASS --key-pass pass:$STORE_PASS \
-            --out out/MyGameHub.apk out/aligned.apk
-          cp android/app/build/outputs/bundle/release/app-release.aab out/MyGameHub.aab
+            --out out/Zoki Playz.apk out/aligned.apk
+          cp android/app/build/outputs/bundle/release/app-release.aab out/Zoki Playz.aab
           jarsigner -keystore release.keystore -storepass $STORE_PASS -keypass $STORE_PASS \
             out/MyGameHub.aab "$ALIAS"
           rm out/aligned.apk
           cp release.keystore out/release.keystore
-          unzip -tq out/MyGameHub.apk
-          unzip -tq out/MyGameHub.aab
-          sha256sum out/MyGameHub.apk out/MyGameHub.aab
+          unzip -tq out/Zoki Playz.apk
+          unzip -tq out/Zoki Playz.aab
+          sha256sum out/Zoki Playz.apk out/Zoki Playz.aab
 
       - name: Publish APK and AAB as direct downloads (no zip)
         uses: softprops/action-gh-release@v2
@@ -82,10 +82,10 @@ jobs:
           tag_name: build-${{ github.run_number }}
           name: Build ${{ github.run_number }}
           files: |
-            out/MyGameHub.apk
-            out/MyGameHub.aab
+            out/Zoki Playz.apk
+            out/Zoki Playz.aab
 
       - uses: actions/upload-artifact@v4
         with:
-          name: MyGameHub-APK-AAB
+          name: Zoki Playz-APK-AAB
           path: out/
