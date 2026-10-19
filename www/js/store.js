@@ -5,7 +5,7 @@ const sv=(k,v)=>{try{localStorage.setItem('gh_'+k,JSON.stringify(v))}catch{}};
 const h=(t,p={},...k)=>{const e=document.createElement(t);for(const i in p){if(i==='on')for(const x in p.on)e.addEventListener(x,p.on[x]);else if(i in e)e[i]=p[i];else e.setAttribute(i,p[i])}k.flat().forEach(c=>e.append(c));return e};
 const once=f=>{let d;return(...a)=>{if(!d){d=1;f(...a)}}};
 const AD=(window.HUB_SETTINGS||{}).ads||{},T=window.HUB_THEMES||[],R=AD.rewardCoins||50;
-let coins=ld('coins',0),owned=ld('owned',[]),cur=ld('theme','neon-blue'),launches=0,lastAd=0;
+let coins=ld('coins',0),owned=ld('owned',[]),defT=ld('defTheme','clean-light'),cur=ld('theme',defT),launches=0,lastAd=0;
 T.forEach(t=>{if(!t.price&&!owned.includes(t.id))owned.push(t.id)});
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2200)};
 /* THEMES */
@@ -43,15 +43,18 @@ function openStore(){const m=h('div',{className:'modal'}),box=h('div',{className
  box.append(h('div',{className:'mh'},h('b',{textContent:'Themes & Coins'}),h('button',{className:'ib',textContent:'✕',on:{click(){m.remove()}}})),
  h('div',{className:'wallet'},h('div',{className:'cchip'},h('i',{className:'coin'}),h('span',{textContent:coins})),
   h('button',{className:'btn',textContent:'▶ Watch Ad +'+R+' coins',on:{click(){rewarded(ok=>{if(ok){add(R);toast('+'+R+' coins mile!')}else toast('Ad poora nahi hua');fill()})}}})));
- ['Boys','Girls','Formal'].forEach(g=>{const l=T.filter(t=>t.group===g);if(!l.length)return;
-  box.append(h('h3',{textContent:g==='Formal'?'Formal / Professional':g==='Boys'?'Boys Themes':'Girls Themes'}),
-  h('div',{className:'tg'},l.map(t=>{const has=owned.includes(t.id),on=cur===t.id;
+ const mine=T.filter(t=>owned.includes(t.id));
+ const sel=h('select',{className:'dsel','aria-label':'Default theme'},mine.map(t=>h('option',{value:t.id,textContent:t.name,selected:t.id===defT})));
+ sel.onchange=()=>{defT=sel.value;sv('defTheme',defT);cur=defT;sv('theme',cur);apply(cur);toast('Default theme set!');fill()};
+ box.append(h('div',{className:'defrow'},h('span',{textContent:'⭐ Default theme'}),sel));
+ box.append(h('h3',{textContent:'Themes'}),
+  h('div',{className:'tg'},T.map(t=>{const has=owned.includes(t.id),on=cur===t.id;
    return h('div',{className:'tc'+(on?' on':'')},h('div',{className:'sw',style:`background:linear-gradient(135deg,${t.h1},${t.h2})`},h('span',{style:'background:'+t.a}),h('span',{style:'background:'+t.v})),
-    h('b',{textContent:t.name}),
+    h('b',{textContent:t.name+(t.id===defT?' ⭐':'')}),
     h('button',{className:'btn sm',disabled:on,textContent:on?'✓ Equipped':has?'Equip':'Buy · '+t.price,on:{click(){
      if(has){cur=t.id;sv('theme',cur);apply(cur)}
      else if(coins>=t.price){add(-t.price);owned.push(t.id);sv('owned',owned);cur=t.id;sv('theme',cur);apply(cur);toast(t.name+' unlock!')}
-     else{toast('Coins kam hain, ad dekho 👆');return}fill()}}}))}))) })})()}
+     else{toast('Coins kam hain, ad dekho 👆');return}fill()}}}))}))) })()}
 apply(cur);
 if(native()&&AndroidAds.showBanner){try{AndroidAds.showBanner();const a=$('#ad');if(a)a.hidden=true}catch{}}
 if(AD.interstitialOnHubOpen!==false)setTimeout(()=>interstitial(()=>{lastAd=Date.now()}),700);

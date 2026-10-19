@@ -85,3 +85,7 @@ img{-webkit-user-drag:none;user-select:none}
 /* chhoti/slow screens par shimmer band */
 @media (max-width:600px){.hero::after{animation:none}}
 @media (prefers-reduced-motion:reduce){.hero::after,.hero img,.brand img{animation:none}}
+
+/* default theme row */
+.defrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 6px;padding:10px 12px;border-radius:14px;background:var(--c);border:1px solid var(--bd);font-weight:700}
+.dsel{max-width:55%;padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--t);font-size:14px}
