@@ -279,6 +279,26 @@ window.HUB_GAMES = {
         "single": true,
         "multi": false
       }
+    },
+	  {
+      "id": "HappyWaterGlass",
+      "title": "Happy Water Glass",
+      "description": "Draw lines to guide water from the tap into the glass and fill it!",
+      "category": "Puzzle",
+      "folder": "games/game15/",
+      "entry": "index15.html",
+      "logo": "assets/logos/image15.webp",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
     }
   ]
 };
