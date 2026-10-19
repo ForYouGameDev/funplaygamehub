@@ -219,6 +219,66 @@ window.HUB_GAMES = {
         "single": true,
         "multi": false
       }
+    },
+	  {
+      "id": "2048MergedBallDrop",
+      "title": "2048 Merged Ball Drop",
+      "description": "Drop numbered balls and merge matching ones to reach 2048!",
+      "category": "Puzzle",
+      "folder": "games/game12/",
+      "entry": "index12.html",
+      "logo": "assets/logos/image12.svg",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
+    },
+	  {
+      "id": "blockBlasrMaster",
+      "title": "Block Blast Master",
+      "description": "Place tetris-style blocks onto an 8x8 grid to clear full lines and score high combos before running out of space.",
+      "category": "Puzzle",
+      "folder": "games/game13/",
+      "entry": "index13.html",
+      "logo": "assets/logos/image13.svg",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
+    },
+	  {
+      "id": "One Line Puzzle",
+      "title": "The One-Line Puzzle",
+      "description": "Connect dots at once, geometric puzzle solve",
+      "category": "Puzzle",
+      "folder": "games/game14/",
+      "entry": "index14.html",
+      "logo": "assets/logos/image14.svg",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
     }
   ]
 };
