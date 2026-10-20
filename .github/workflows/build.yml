@@ -33,10 +33,15 @@ jobs:
           node scripts/patch-android.js
           grep -q "com.google.android.gms.ads.APPLICATION_ID" android/app/src/main/AndroidManifest.xml
       
-      - name: Set minSdk 24 (Play automatic protection)
+      - name: Set SDK levels (min 25, target 36)
         run: |
-          sed -i "s/minSdkVersion = [0-9]*/minSdkVersion = 24/" android/variables.gradle
-          grep -n "minSdkVersion" android/variables.gradle
+          sed -i "s/minSdkVersion = [0-9]*/minSdkVersion = 25/; s/compileSdkVersion = [0-9]*/compileSdkVersion = 36/; s/targetSdkVersion = [0-9]*/targetSdkVersion = 36/" android/variables.gradle
+          # SDK 36 ke liye naya Android Gradle Plugin + Gradle chahiye
+          sed -i -E "s#(com.android.tools.build:gradle:)[0-9.]+#\18.9.1#" android/build.gradle
+          sed -i -E "s#gradle-[0-9.]+-(all|bin)\.zip#gradle-8.11.1-all.zip#" android/gradle/wrapper/gradle-wrapper.properties
+          cat android/variables.gradle
+          grep -n "com.android.tools.build" android/build.gradle
+          grep -n "distributionUrl" android/gradle/wrapper/gradle-wrapper.properties
 
       - name: Set app version
         run: |
