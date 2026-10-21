@@ -1,9 +1,9 @@
 // Hub name, logo, music, ads yahan se badlo
 window.HUB_SETTINGS = {
-  "hubName": "Fun Play Games Hub",
+  "hubName": "ZOKI PLAYZ",
   "tagline": "Play. Win. Repeat.",
   "hubLogo": "assets/logos/hub-logo.svg",
-  "version": "1.0.31",
+  "version": "1.0.45",
   "hubMusic": "assets/music/hub.mp3",
   "recentLimit": 8,
   "background": {"enabled": true, "count": 16, "emojis": ["⭐","🎮","💖","✨","🕹️","🍭","🚀","🎈","👾","🌈","🎲","🍩"]},
