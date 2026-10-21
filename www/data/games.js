@@ -324,7 +324,7 @@ window.HUB_GAMES = {
       "id": "taptaptugofwar",
       "title": "Tap Tap Tug of war",
       "description": "Tap as fast as you can to pull the rope and defeat your opponent!",
-      "category": "Arcade" "2 Player",
+      "category": "Arcade",
       "folder": "games/game17/",
       "entry": "index17.html",
       "logo": "assets/logos/image17.webp",
@@ -337,7 +337,7 @@ window.HUB_GAMES = {
       ],
       "modes": {
         "single": true,
-        "multi": true,
+        "multi": true
       }
     },
 	  {
