@@ -299,6 +299,86 @@ window.HUB_GAMES = {
         "single": true,
         "multi": false
       }
+    },
+	  {
+      "id": "gravityFlipmaze",
+      "title": "Gravity Flip Maze",
+      "description": "Tap to flip gravity and guide the rolling ball safely between ceiling and floor!",
+      "category": "Arcade",
+      "folder": "games/game16/",
+      "entry": "index16.html",
+      "logo": "assets/logos/image16.webp",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
+    },
+	  {
+      "id": "taptaptugofwar",
+      "title": "Tap Tap Tug of war",
+      "description": "Tap as fast as you can to pull the rope and defeat your opponent!",
+      "category": "Arcade" "2 Player",
+      "folder": "games/game17/",
+      "entry": "index17.html",
+      "logo": "assets/logos/image17.webp",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": true,
+      }
+    },
+	  {
+      "id": "neoncyberslimejump",
+      "title": "Neon Cyber Slime Jump",
+      "description": "Stretch and release your neon slime to spring up onto moving platforms accurately!",
+      "category": "Arcade",
+      "folder": "games/game18/",
+      "entry": "index18.html",
+      "logo": "assets/logos/image18.webp",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
+    },
+	  {
+      "id": "MrBulletShooter",
+      "title": "Mr. Bullet Shooter",
+      "description": "Bounce limited bullets off walls to hit hidden enemies in clever ricochet shots!",
+      "category": "Puzzle",
+      "folder": "games/game19/",
+      "entry": "index19.html",
+      "logo": "assets/logos/image19.webp",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
     }
   ]
 };
