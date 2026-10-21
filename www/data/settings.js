@@ -2,7 +2,7 @@
 window.HUB_SETTINGS = {
   "hubName": "ZOKI PLAYZ",
   "tagline": "Play. Win. Repeat.",
-  "hubLogo": "assets/logos/hub-logo.svg",
+  "hubLogo": "assets/logos/hub-logo.webp",
   "version": "1.0.45",
   "hubMusic": "assets/music/hub.mp3",
   "recentLimit": 8,
