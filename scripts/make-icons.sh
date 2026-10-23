@@ -3,7 +3,9 @@
 set -euo pipefail
 SRC=assets/icon-only.png
 R=${1:-android/app/src/main/res}
-command -v convert >/dev/null || sudo apt-get install -y imagemagick
+if ! command -v convert >/dev/null && ! command -v magick >/dev/null; then sudo apt-get update -y; sudo apt-get install -y imagemagick; fi
+# ImageMagick 7 me "convert" ki jagah "magick" hota hai
+if command -v magick >/dev/null; then convert(){ magick "$@"; }; identify(){ magick identify "$@"; }; fi
 identify "$SRC"
 BG=$(convert "$SRC" -format '#%[hex:p{4,4}]' info: | cut -c1-7)
 echo "adaptive background: $BG"
