@@ -31,7 +31,7 @@
   /* 4) Touch polish: tap highlight / long-press menu / pull-to-refresh band */
   try{
     var st=document.createElement('style');
-    st.textContent='html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}canvas{-webkit-user-select:none;user-select:none;outline:none}';
+    st.textContent='html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}canvas{-webkit-user-select:none;user-select:none;outline:none}*{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}';
     (document.head||document.documentElement).appendChild(st);
     addEventListener('contextmenu',function(e){e.preventDefault()});
   }catch(e){}
