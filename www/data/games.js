@@ -379,6 +379,86 @@ window.HUB_GAMES = {
         "single": true,
         "multi": false
       }
+    },
+	  {
+      "id": "UnblockMe",
+      "title": "Unblock Me",
+      "description": "Slide wooden blocks strategically to create a clear exit path for the red block!",
+      "category": "Puzzle",
+      "folder": "games/game20/",
+      "entry": "index20.html",
+      "logo": "assets/logos/image20.webp",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
+    },
+	  {
+      "id": "CyberJetDodge",
+      "title": "Cyber Jet Dodge",
+      "description": "Pilot a high-speed jet and dodge deadly obstacles with quick left-right taps!",
+      "category": "Arcade",
+      "folder": "games/game21/",
+      "entry": "index21.html",
+      "logo": "assets/logos/image21.webp",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
+    },
+	  {
+      "id": "MathWallBreaker",
+      "title": "Math Wall Breaker",
+      "description": "Tap the correct answer blocks before they hit the floor to break walls!",
+      "category": "Educational",
+      "folder": "games/game22/",
+      "entry": "index22.html",
+      "logo": "assets/logos/image22.webp",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
+    },
+	  {
+      "id": "CodeLogicGrid",
+      "title": "Code Logic Grid",
+      "description": "Sequence command blocks correctly to guide the robot safely to the treasure chest!",
+      "category": "Educational",
+      "folder": "games/game23/",
+      "entry": "index23.html",
+      "logo": "assets/logos/image23.webp",
+      "featured": true,
+      "enabled": true,
+      "tags": [
+        "tap",
+        "orbs",
+        "fast"
+      ],
+      "modes": {
+        "single": true,
+        "multi": false
+      }
     }
   ]
 };
